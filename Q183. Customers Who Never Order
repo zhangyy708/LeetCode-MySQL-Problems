@@ -1,0 +1,8 @@
+#551ms
+#self join problem
+
+SELECT Name AS Customers
+FROM customers AS a
+LEFT JOIN orders AS b
+ON a.id = b.CustomerId
+WHERE b.id IS NULL;
