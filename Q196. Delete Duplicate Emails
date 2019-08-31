@@ -1,0 +1,13 @@
+#... a difficult self join problem
+
+#1190ms?!
+DELETE p1 FROM person AS p1, person AS p2
+WHERE p1.Email = p2.Email AND p1.Id > p2.Id;
+
+#935ms
+DELETE FROM person
+WHERE id NOT IN (SELECT id FROM
+                (SELECT MIN(id) AS id
+                FROM person
+                GROUP BY email) AS temp);
+                
