@@ -1,0 +1,9 @@
+#IFNULL(expr1, expr2): if expr1 is null, then return expr2; if expr1 is not null, then return expr1
+#in this case, ifnull is used to return null if there is no second highest salary
+#distinct is used to avoid same salaries
+
+SELECT IFNULL((SELECT DISTINCT salary
+              FROM employee
+              ORDER BY salary DESC
+              LIMIT 1,1), NULL)
+       AS SecondHighestSalary;
