@@ -1,0 +1,20 @@
+#WHERE (col1, col2) IN (...): 2-column where-condition
+
+#877ms, original code
+SELECT player_id, device_id
+FROM activity
+WHERE (player_id, event_date) IN (
+  SELECT player_id, MIN(event_date)
+  FROM activity
+  GROUP BY player_id);
+
+
+#763ms, using JOIN
+SELECT a.player_id, a.device_id
+FROM activity AS a
+INNER JOIN (
+  SELECT player_id, MIN(event_date) AS event_date
+  FROM activity
+  GROUP BY player_id) AS b
+ON a.player_id = b.player_id
+AND a.event_date = b.event_date;
