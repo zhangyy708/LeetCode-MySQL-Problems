@@ -1,0 +1,7 @@
+#self inner join problem
+
+SELECT a.Name AS Employee
+FROM employee AS a
+INNER JOIN employee AS b
+ON a.ManagerId = b.Id
+WHERE a.Salary > b.Salary;
