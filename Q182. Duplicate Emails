@@ -1,0 +1,17 @@
+#the first code is much faster (352ms)
+
+SELECT Email
+FROM person
+GROUP BY Email
+HAVING COUNT(Email) > 1;
+
+
+#the following code is original but too slow (709ms)
+
+SELECT DISTINCT a.Email
+FROM person AS a
+INNER JOIN (SELECT COUNT(*) AS num, Email
+           FROM person
+           GROUP BY Email) AS b
+USING(Email)
+WHERE b.num > 1;
