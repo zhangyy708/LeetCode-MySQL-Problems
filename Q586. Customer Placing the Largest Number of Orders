@@ -1,0 +1,10 @@
+#...somehow similar to VLOOKUP in Excel
+
+SELECT DISTINCT a.customer_number
+FROM orders AS a
+INNER JOIN (SELECT customer_number, COUNT(*) AS num
+            FROM orders
+            GROUP BY customer_number
+            ORDER BY num DESC
+            LIMIT 1) AS temp
+USING(customer_number);
