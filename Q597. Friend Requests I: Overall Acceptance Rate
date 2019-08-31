@@ -1,0 +1,24 @@
+#COUNT(DISTINCT) can take more than 1 columns like DISTINCT (use DISTINCT col1, col2) (col1, DISTINCT col2 is not acceptable)
+#if(expr1, expr2, expr3): if expr1=true, then return expr2; else return expr3
+
+#488ms, original code
+SELECT IF(COUNT(b.requester_id)=0, 
+          0.00, 
+          ROUND(COUNT(DISTINCT b.requester_id, b.accepter_id) /
+                COUNT(DISTINCT a.sender_id, a.send_to_id),2)
+          ) AS accept_rate
+FROM friend_request AS a, request_accepted AS b;
+
+
+#441ms, official solution
+SELECT
+  ROUND(
+    IFNULL(
+      (SELECT COUNT(*) FROM
+        (SELECT DISTINCT requester_id, accepter_id
+         FROM request_accepted) AS a) /
+      (SELECT COUNT(*) FROM
+        (SELECT DISTINCT sender_id, send_to_id
+         FROM friend_request) AS b)
+    , 0),
+  2) AS accept_rate;
