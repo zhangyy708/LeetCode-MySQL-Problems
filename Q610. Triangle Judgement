@@ -1,0 +1,4 @@
+#use SELECT to create a new column, not ALTER TABLE ... ADD COLUMN ...
+
+SELECT x,y,z, (IF((x+y>z AND ABS(x-y)<z), 'Yes', 'No')) AS triangle
+FROM triangle;
