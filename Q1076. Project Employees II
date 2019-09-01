@@ -1,4 +1,4 @@
-#consider duplicated data (if any)
+#there can be more than 1 project with the most employees
 #there is no MAX syntax
 #IN cannot be used in HAVING syntax
 
