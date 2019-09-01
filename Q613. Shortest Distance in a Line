@@ -1,0 +1,6 @@
+#in MySQL, JOIN = INNER JOIN = CROSS JOIN
+
+SELECT MIN(ABS(a.x-b.x)) AS shortest
+FROM point AS a
+CROSS JOIN point AS b
+ON a.x != b.x;
