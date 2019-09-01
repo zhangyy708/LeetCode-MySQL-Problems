@@ -1,0 +1,10 @@
+#331ms, original code
+UPDATE salary
+SET sex = IF(sex='m', 'f', 'm');
+
+
+#357ms, official solution
+UPDATE salary
+SET sex = CASE sex 
+          WHEN 'm' THEN 'f'
+          ELSE 'm' END;
