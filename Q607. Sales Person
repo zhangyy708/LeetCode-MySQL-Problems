@@ -1,0 +1,22 @@
+#1300ms, original code
+SELECT name
+FROM salesperson
+WHERE sales_id NOT IN (
+ SELECT sales_id
+ FROM orders
+ WHERE com_id IN (
+  SELECT com_id
+  FROM company
+  WHERE name = 'RED')
+);
+
+#1127ms, without using subqueries
+SELECT s.name
+FROM salesperson AS s
+LEFT JOIN orders AS o
+ ON s.sales_id = o.sales_id
+LEFT JOIN company AS c
+ ON o.com_id = c.com_id
+GROUP BY s.name
+HAVING SUM(IF(c.name='RED',1,0))=0
+ORDER BY s.sales_id;
