@@ -1,0 +1,25 @@
+#a create-function problem: 
+#CREATE FUNCTION function_name(variable_name variable_type) RETURNS type
+#BEGIN
+#DECLARE another_variable_name type;
+#SET ...=...;
+#  RETURN ( ... );
+#END
+
+#cannot use P-1 inside RETURN()
+#use subquery in order to return NULL if there is no Nth
+#LIMIT a,b = LIMIT b OFFSET a, select from number a+1 row, select b rows
+
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+DECLARE P INT;
+SET P=N-1;
+  RETURN (
+      # Write your MySQL query statement below.
+      SELECT(
+      SELECT DISTINCT salary
+      FROM  employee
+      ORDER BY salary DESC
+      LIMIT P,1)
+  );
+END
