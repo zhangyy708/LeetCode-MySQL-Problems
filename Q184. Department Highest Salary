@@ -1,0 +1,11 @@
+#MAX() is an aggregate function
+
+SELECT d.name AS Department, e.name AS Employee, e.Salary
+FROM employee AS e
+INNER JOIN department AS d
+ON e.departmentid = d.id
+WHERE (e.salary, e.departmentid) IN
+(SELECT MAX(salary), departmentid
+ FROM employee
+ GROUP BY departmentid)
+ORDER BY e.id;
