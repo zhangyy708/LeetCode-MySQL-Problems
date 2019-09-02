@@ -1,0 +1,17 @@
+#1: in candidate, use id to find name
+#2: in vote, find candidateid with the biggest num
+#3: find biggest num
+#LIMIT can be used inside WHERE subquery, but not HAVING subquery
+
+SELECT name
+FROM candidate
+WHERE id = 
+ (SELECT vote.candidateid
+ FROM vote
+ INNER JOIN 
+  (SELECT candidateid, COUNT(*) AS num
+  FROM vote
+  GROUP BY candidateid) AS temp
+  ON vote.candidateid = temp.candidateid
+  ORDER BY num DESC
+  LIMIT 1);
