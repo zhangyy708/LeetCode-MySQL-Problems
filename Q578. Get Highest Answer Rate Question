@@ -1,0 +1,41 @@
+
+#313ms, original code
+#num is the number of total times that a question appears, instead of action='show' times
+SELECT c.question_id AS survey_log
+FROM
+(SELECT question_id, COUNT(*) AS answer
+ FROM
+ (SELECT question_id
+  FROM survey_log
+  WHERE action = 'answer') AS a
+ GROUP BY question_id) AS c
+INNER JOIN
+(SELECT question_id, COUNT(*) AS num
+ FROM survey_log
+ GROUP BY question_id) AS d
+ON c.question_id = d.question_id
+ORDER BY (c.answer / d.num) DESC
+LIMIT 1
+
+#245ms
+SELECT question_id AS survey_log
+FROM (
+SELECT SUM(CASE action
+           WHEN 'answer' THEN 1
+           ELSE 0 END) / 
+       SUM(CASE action
+           WHEN 'show' THEN 1
+           ELSE 0 END) AS fraction, question_id
+FROM survey_log
+GROUP BY question_id
+) AS temp
+ORDER BY fraction DESC
+LIMIT 1
+
+#240ms, use COUNT inside ORDER BY
+SELECT question_id AS survey_log
+FROM survey_log
+GROUP BY question_id
+ORDER BY (COUNT(answer_id) / 
+          COUNT(IF(action='show',1,0))) DESC
+LIMIT 1
