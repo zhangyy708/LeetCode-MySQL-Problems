@@ -1,0 +1,9 @@
+SELECT name
+FROM employee
+WHERE id IN (
+SELECT managerid
+FROM employee
+GROUP BY managerid
+HAVING managerid IS NOT NULL
+AND COUNT(managerid) >= 5
+)
