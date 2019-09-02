@@ -1,0 +1,14 @@
+#very difficult...(for me)
+#s1&s2: for every s1 score, count how many distinct s2 scores are higher than the s1 score, which is the rank of the s1 score
+#left join: for duplicated s1 scores
+
+SELECT s0.Score, temp.Rank
+FROM scores AS s0
+LEFT JOIN (
+ SELECT s1.Score, COUNT(DISTINCT s2.score) AS Rank
+ FROM scores AS s1
+ CROSS JOIN scores AS s2
+ WHERE s1.Score <= s2.Score
+ GROUP BY s1.score) AS temp
+ON s0.Score = temp.score
+ORDER BY s0.score DESC;
