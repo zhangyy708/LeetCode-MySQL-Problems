@@ -1,0 +1,10 @@
+SELECT p1.project_id, p1.employee_id
+FROM project AS p1
+LEFT JOIN employee AS e1
+ON p1.employee_id = e1.employee_id
+WHERE (p1.project_id, e1.experience_years) IN
+(SELECT p2.project_id, MAX(e2.experience_years)
+ FROM employee AS e2
+ LEFT JOIN project AS p2
+ ON e2.employee_id = p2.employee_id
+ GROUP BY p2.project_id);
