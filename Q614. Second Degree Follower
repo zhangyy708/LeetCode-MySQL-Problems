@@ -1,0 +1,7 @@
+#note that there can be duplicated data
+
+SELECT a.follower, COUNT(DISTINCT b.follower) AS num
+FROM follow AS a
+CROSS JOIN follow AS b
+ON a.follower = b.followee
+GROUP BY a.follower
