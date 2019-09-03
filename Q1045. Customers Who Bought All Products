@@ -1,0 +1,18 @@
+#aggregate functions cannot be used inside WHERE clause
+
+#2031ms, original code
+SELECT c1.customer_id
+FROM customer AS c1
+CROSS JOIN customer AS c2
+ON c1.product_key != c2.product_key
+AND c1.customer_id = c2.customer_id
+GROUP BY c1.customer_id
+HAVING COUNT(DISTINCT c1.product_key) = (SELECT COUNT(*) FROM product);
+
+#777ms, improved version of the former code
+SELECT customer_id
+FROM customer
+GROUP BY customer_id
+HAVING  COUNT(DISTINCT product_key) = 
+        (SELECT COUNT(*) AS num_p
+         FROM product);
