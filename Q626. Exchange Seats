@@ -1,0 +1,9 @@
+#subquery is used to create a number; if just MAX() is used, then only 1 result will be returned
+
+SELECT 
+(CASE WHEN id%2 = 0 THEN id-1
+      WHEN id = (SELECT MAX(id) FROM seat) THEN id
+      ELSE id+1 END)
+AS id, student
+FROM seat
+ORDER BY id;
