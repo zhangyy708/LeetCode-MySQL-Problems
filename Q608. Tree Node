@@ -1,0 +1,28 @@
+
+
+#571ms, original code
+SELECT *
+FROM
+((SELECT id, 'Root' AS type
+  FROM tree
+  WHERE p_id IS NULL)
+ UNION
+ (SELECT id, 'Inner' AS type
+  FROM tree
+  WHERE p_id IS NOT NULL
+  AND id IN (SELECT p_id FROM tree))
+  UNION
+ (SELECT id, 'Leaf' AS type
+  FROM tree
+  WHERE p_id IS NOT NULL
+  AND id NOT IN (SELECT IFNULL(p_id,0) FROM tree))
+) AS temp
+ORDER BY id;
+
+#505ms, official answer 2
+SELECT id, 
+(CASE WHEN p_id IS NULL THEN 'Root'
+      WHEN id IN (SELECT p_id FROM tree) THEN 'Inner'
+      ELSE 'Leaf' END)
+AS type
+FROM tree;
