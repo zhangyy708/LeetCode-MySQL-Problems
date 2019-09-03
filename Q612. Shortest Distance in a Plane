@@ -1,0 +1,7 @@
+#POWER() or POW(): POWER(a,b) equals a^b (there is no ^ in MySQL)
+
+SELECT MIN(ROUND(SQRT(POWER((a.x-b.x),2)+POWER((a.y-b.y),2)),2)) AS shortest
+FROM point_2d AS a
+CROSS JOIN point_2d AS b
+ON a.x != b.x
+OR a.y != b.y
