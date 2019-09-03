@@ -1,0 +1,20 @@
+#subquery 1: find those pids who have same TIV_2015 as others
+#subquery 2: find those pids who locate at the same place as others
+#WHERE clause: find those pids who IN subquery 1 but NOT IN subquery 2
+#subquery does not need alias
+
+SELECT ROUND(SUM(insurance.TIV_2016),2) AS TIV_2016
+FROM insurance
+WHERE insurance.pid IN
+(SELECT DISTINCT a.pid
+ FROM insurance AS a
+ CROSS JOIN insurance AS b
+  ON a.TIV_2015 = b.TIV_2015
+  AND a.pid != b.pid) 
+AND insurance.pid NOT IN
+(SELECT DISTINCT c.pid
+ FROM insurance AS c
+ CROSS JOIN insurance AS d
+  ON c.LAT = d.LAT
+  AND c.LON = d.LON
+  AND c.pid != d.pid);
