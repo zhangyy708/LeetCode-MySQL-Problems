@@ -1,0 +1,13 @@
+#use JOIN to count how many employees have more salary than a certain employee, and take this result as rank
+
+SELECT d.name AS department, c.name AS employee, c.salary
+FROM
+(SELECT a.name, a.departmentid, a.salary
+FROM employee AS a
+CROSS JOIN employee AS b
+ON a.salary <= b.salary
+AND a.departmentid = b.departmentid
+GROUP BY a.departmentid, a.name
+HAVING COUNT(DISTINCT b.salary) <= 3) AS c
+INNER JOIN department AS d
+ON c.departmentid = d.id;
