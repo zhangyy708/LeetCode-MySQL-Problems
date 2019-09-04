@@ -1,0 +1,16 @@
+#COUNT(IF()): use IF(expr, null, col_name) instead of IF(expr, 0, 1), because COUNT(1) = 1
+#in the ↑ case, COUNT(IF(expr, null, col_name)) is equivalent to SUM(IF(expr, 0, 1))
+#if an alias includes a space ' ', then use '' to surround the alias
+
+SELECT request_at AS day, ROUND(COUNT(IF(status='completed',null,status)) / COUNT(status),2) AS 'cancellation rate'
+FROM
+(SELECT t.id, t.status, t.request_at
+FROM trips AS t
+LEFT JOIN users AS u1
+ON t.client_id = u1.users_id
+LEFT JOIN users AS u2
+ON t.driver_id = u2.users_id
+WHERE u1.banned = 'No'
+AND u2.banned = 'No'
+AND t.request_at BETWEEN '2013-10-01' AND '2013-10-03') AS temp
+GROUP BY request_at;
